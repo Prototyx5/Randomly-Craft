@@ -27,22 +27,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 public class RandomlyCraft_Main extends JavaPlugin implements Listener{
-	 public static RandomlyCraft_Main plugin;
-	  private Stacker playerListener;
-	
+	public static RandomlyCraft_Main plugin;
+	private Stacker playerListener;
+
 	public Logger log = Logger.getLogger("Randomly-Craft");
 
 	public void onEnable() {
 
-		 new Stacker(this);
-		 this.playerListener = new Stacker(this);
-		 
+		new Stacker(this);
+		this.playerListener = new Stacker(this);
 		log.info("[Randomly-Craft] Les plugins on bien ete charger et demarre !");
 
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-	    PluginManager pm = getServer().getPluginManager();
-	    pm.registerEvents(this.playerListener, this);
-	    
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(this.playerListener, this);
+
 		try {
 			Metrics metrics = new Metrics(this);
 			metrics.start();
@@ -110,6 +109,53 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 			}
 			else if(label.equalsIgnoreCase("randomly-craft")) {
 				player.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Le plugin fonctionne correctement !");
+			}
+			if (cmd.getName().equalsIgnoreCase("fakejoin")) {
+				if (args.length == 0) {
+					sender.sendMessage(ChatColor.RED + "Please specify a name.");
+					return true;
+				}
+				if (args.length == 1) {
+					Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + args[0] + " has joined the game");
+					return true;
+				}
+				if (args.length == 2) {
+					if (args[1].contains("leave")) {
+						Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + args[0] + " has left the game");
+						return true;
+					}
+					sender.sendMessage(ChatColor.RED + "/fj <username> [leave]");
+					return true;
+				}
+
+			}
+
+			if (cmd.getName().equalsIgnoreCase("talkas")) {
+				if (args.length <= 0) {
+					sender.sendMessage(ChatColor.RED + "/ta <username> <message>");
+					return true;
+				}
+				if (args.length == 1) {
+					sender.sendMessage(ChatColor.RED + "You need a message to send!");
+					return true;
+				}
+				if (args.length >= 2) {
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < args.length; i++) {
+						if (i != 0) {
+							sb.append(" ");
+							sb.append(args[i]);
+						}
+					}
+
+					String stringToSend = sb.toString();
+					Bukkit.getServer().broadcastMessage("<" + args[0] + ">" + stringToSend);
+					return true;
+				}
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "Usable commands: /fj, or /ta");
 			}
 		} else {
 			sender.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Il faut etre un joueur pour effectuer cette commande");

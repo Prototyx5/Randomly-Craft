@@ -11,6 +11,12 @@ commands:
     description: Test du fonctionnement du plugin.
   wither:
     description: A venir.
+  fakejoin:
+    aliases: [fj]
+    description: Le joueur de votre choix rejoin le serveur.
+  talkas:
+    aliases: [ta]
+    description: Le joueur de votre choix dit se que vous voulez.
 permissions:
   stacker.stack:
     description:
