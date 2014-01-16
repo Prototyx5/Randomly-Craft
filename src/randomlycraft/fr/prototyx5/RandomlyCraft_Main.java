@@ -6,7 +6,10 @@ package randomlycraft.fr.prototyx5;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
+import java.io.File;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,31 +25,63 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 
 public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 	public static RandomlyCraft_Main plugin;
 	private Stacker playerListener;
+	public static LoginAndQuit plugin1;
+	public static FileConfiguration config;
+	public static String JoinMessage;
+	public static String QuitMessage;
+	public static String PluginDirectory = "plugins/RandomlyCraft";
+	public static double ConfigVersion;
+	public static double CurrentConfigVersion = 7.0;
+
+	static File MainConfig = new File(PluginDirectory + File.separator + "config.yml");
 
 	public Logger log = Logger.getLogger("Randomly-Craft");
 
 	public void onEnable() {
 
-		new Stacker(this);
-		this.playerListener = new Stacker(this);
-		log.info("[Randomly-Craft] Les plugins on bien ete charger et demarre !");
+		saveDefaultConfig();
+		config = getConfig();
+		ConfigVersion = config.getDouble("Config.Version");
+		if (ConfigVersion == CurrentConfigVersion) {
+			JoinMessage = config.getString("Messages.JoinMessage");
+			QuitMessage = config.getString("Messages.QuitMessage");
+			saveConfig();
+		} else {
+			JoinMessage = config.getString("Messages.JoinMessage");
+			QuitMessage = config.getString("Messages.QuitMessage");
 
-		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(this.playerListener, this);
+			MainConfig.delete();
+			saveDefaultConfig();
 
-		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		} catch (IOException e1) {
-			// Failed to submit the stats :-(
+			config = getConfig();
+			config.set("Messages.JoinMessage", JoinMessage);
+			config.set("Messages.QuitMessage", QuitMessage);
+			config.set("Config.Version", Double.valueOf(CurrentConfigVersion));
+			saveConfig();
+
+			new Stacker(this);
+			this.playerListener = new Stacker(this);
+			log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			log.info("[Randomly-Craft] Les plugins on bien ete charger et demarre !");
+			log.info("[Randomly-Craft] Les Metrics on ete charger !");
+			log.info("[Randomly-Craft] Stacker a ete charger !");
+			log.info("[Randomly-Craft] JoinAndQuit a ete charger !");
+			log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+			Bukkit.getServer().getPluginManager().registerEvents(this, this);
+			PluginManager pm = getServer().getPluginManager();
+			pm.registerEvents(this.playerListener, this);
+
+			try {
+				Metrics metrics = new Metrics(this);
+				metrics.start();
+			} catch (IOException e1) {
+				// Failed to submit the stats :-(
+			}
 		}
 	}
 
@@ -112,7 +147,7 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 			}
 			if (cmd.getName().equalsIgnoreCase("fakejoin")) {
 				if (args.length == 0) {
-					sender.sendMessage(ChatColor.RED + "Please specify a name.");
+					sender.sendMessage(ChatColor.RED + "Il faut mettre un pseudo.");
 					return true;
 				}
 				if (args.length == 1) {
@@ -120,7 +155,7 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 					return true;
 				}
 				if (args.length == 2) {
-					if (args[1].contains("leave")) {
+					if (args[1].contains("fakeleave")) {
 						Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + args[0] + " has left the game");
 						return true;
 					}
@@ -136,7 +171,7 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 					return true;
 				}
 				if (args.length == 1) {
-					sender.sendMessage(ChatColor.RED + "You need a message to send!");
+					sender.sendMessage(ChatColor.RED + "Vous devez mettre un message !");
 					return true;
 				}
 				if (args.length >= 2) {
@@ -155,7 +190,6 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "Usable commands: /fj, or /ta");
 			}
 		} else {
 			sender.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Il faut etre un joueur pour effectuer cette commande");
@@ -163,5 +197,10 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 
 
 		return true;
+
+
+	}
+	public void onReload() {
+		plugin.reloadConfig();
 	}
 }

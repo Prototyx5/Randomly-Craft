@@ -1,8 +1,10 @@
 package randomlycraft.fr.prototyx5;
 
 /*
- * ©Copyright 2014-2015 Dylan Benincasa. All rights reserved.
+ * Copyright 2014-2015 Dylan Benincasa. All rights reserved.
+ * Don't steal any of my code.
  */
+
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,7 +29,6 @@ implements Listener
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		if ((event.getRightClicked() instanceof Player)) {
 			Player player = event.getPlayer();
-			if ((player.isOp())) {
 				if ((!mplEjectPassenger(player, event.getRightClicked())) && (playerCanRide(player))) {
 					Player vehicle = getVehicle(player);
 
@@ -48,7 +49,6 @@ implements Listener
 				}
 			}
 		}
-	}
 
 	private boolean playerCanRide(Player player)
 	{
@@ -58,7 +58,7 @@ implements Listener
 		if ((mpl.hasPermission("stacker.eject")) && 
 				(passenger.equals(mpl.getPassenger()))) {
 			mpl.sendMessage(ChatColor.GREEN + "Vous avez éjecter votre passagé !");
-			alertPlayers((Player)passenger, mpl, "");
+			alertPlayers((Player)passenger, mpl, "message");
 
 			return true;
 		}
