@@ -13,10 +13,12 @@ commands:
     description: A venir.
   fakejoin:
     aliases: [fj]
-    description: Le joueur de votre choix rejoin le serveur.
+    description: Le joueur de votre choix rejoin le serveur pour de faux.
   talkas:
     aliases: [ta]
     description: Le joueur de votre choix dit se que vous voulez.
+  fakeleave:  
+    description: Le joueur de votre choix quite le serveur pour de faux.
 permissions:
   stacker.stack:
     description:

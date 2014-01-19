@@ -17,38 +17,38 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 public class Stacker
 implements Listener
 {
-	public RandomlyCraft_Main plugin;
+	public RandomlyCraft_Main plugin1;
 	protected FileConfiguration config;
 
 	public Stacker(RandomlyCraft_Main Instance)
 	{
-		this.plugin = Instance;
+		this.plugin1 = Instance;
 	}
 
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		if ((event.getRightClicked() instanceof Player)) {
 			Player player = event.getPlayer();
-				if ((!mplEjectPassenger(player, event.getRightClicked())) && (playerCanRide(player))) {
-					Player vehicle = getVehicle(player);
+			if ((!mplEjectPassenger(player, event.getRightClicked())) && (playerCanRide(player))) {
+				Player vehicle = getVehicle(player);
 
-					if (vehicle == null) {
-						vehicle = (Player)event.getRightClicked();
-						Player mpl = getRootVehicle(vehicle);
+				if (vehicle == null) {
+					vehicle = (Player)event.getRightClicked();
+					Player mpl = getRootVehicle(vehicle);
 
-						if (mpl.hasPermission("stacker.stack")) {
-							getLastPassenger(player).setPassenger(vehicle);
-							player.sendMessage(ChatColor.GREEN + "Vous avez stacker " + getLastPassenger(player).getName() + "!");
-							getLastPassenger(player).sendMessage(ChatColor.BLUE + player.getName() + " vous a stacker");
-							alertPlayers(player, mpl, "message");
-						}
+					if (mpl.hasPermission("stacker.stack")) {
+						getLastPassenger(player).setPassenger(vehicle);
+						player.sendMessage(ChatColor.GREEN + "Vous avez stacker " + getLastPassenger(player).getName() + "!");
+						getLastPassenger(player).sendMessage(ChatColor.BLUE + player.getName() + " vous a stacker");
+						alertPlayers(player, mpl, "message");
 					}
-					else {
-						vehicle.eject();
-					}
+				}
+				else {
+					vehicle.eject();
 				}
 			}
 		}
+	}
 
 	private boolean playerCanRide(Player player)
 	{
@@ -80,7 +80,7 @@ implements Listener
 		return vehicle;
 	}
 	private Player getVehicle(Player player) {
-		for (Player onlinePlayer : this.plugin.getServer().getOnlinePlayers()) {
+		for (Player onlinePlayer : this.plugin1.getServer().getOnlinePlayers()) {
 			Entity passenger = onlinePlayer.getPassenger();
 
 			if (((passenger instanceof Player)) && (passenger.getEntityId() == player.getEntityId())) {
@@ -94,6 +94,6 @@ implements Listener
 		String message = this.config.getString(key);
 
 		if (!message.isEmpty())
-			this.plugin.getServer().broadcastMessage(message.replace("<player>", player.getName()).replace("<mpl>", mpl.getName()));
+			this.plugin1.getServer().broadcastMessage(message.replace("<player>", player.getName()).replace("<mpl>", mpl.getName()));
 	}
 }
