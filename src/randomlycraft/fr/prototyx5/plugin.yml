@@ -1,6 +1,6 @@
 name: Randomly-Craft
 author: Prototyx5
-version: 7.0B
+version: 7.0
 main: randomlycraft.fr.prototyx5.RandomlyCraft_Main
 commands:
   ender:

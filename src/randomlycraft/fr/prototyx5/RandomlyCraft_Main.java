@@ -7,23 +7,21 @@ package randomlycraft.fr.prototyx5;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import java.io.File;
-
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -35,31 +33,29 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-@SuppressWarnings("unused")
 public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 	public static RandomlyCraft_Main plugin;
-	private Stacker playerListener;
-	public Logger log = Logger.getLogger("Randomly-Craft");
-
+	Logger log = Logger.getLogger("Randomly-Craft");
+	
 	public void onEnable() {
-		new Stacker(this);
-		this.playerListener = new Stacker(this);
-		Server serv = Bukkit.getServer();
 
+		
 		log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		log.info("                                                              ");
-		log.info("[Randomly-Craft] Autheur du plugin: Prototyx5.");
+		log.info("[Randomly-Craft Start] Auteur du plugin: Prototyx5.");
+		log.info("[Randomly-Craft Start] Version du plugin: 7.0B ");
 		log.info("                                                              ");
-		log.info("[Randomly-Craft] Les plugins on bien ete charger et demarre !");
-		log.info("[Randomly-Craft] Les Metrics on ete charger !");
-		log.info("[Randomly-Craft] Stacker a ete charger !");
-		log.info("[Randomly-Craft] JoinAndQuit a ete charger !");
+		log.info("[Randomly-Craft Start] Les plugins on bien ete charger et demarre !");
+		log.info("[Randomly-Craft Start] Les Metrics on ete charger !");
+		log.info("[Randomly-Craft Start] Stacker a ete charger !");
+		log.info("[Randomly-Craft Start] JoinAndQuit a ete charger !");
 		log.info("                                                              ");
 		log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.broadcastMessage(ChatColor.AQUA + "[Randomly-Craft] " + ChatColor.RESET + ChatColor.DARK_PURPLE + "Le Serveur c'est bien lancé !");
+
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(this.playerListener, this);
+		pm.registerEvents(this, this);
 
 		try {
 			Metrics metrics = new Metrics(this);
@@ -73,12 +69,12 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 
 		log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		log.info("                                                              ");
-		log.info("[Randomly-Craft] Autheur du plugin: Prototyx5.");
+		log.info("[Randomly-Craft Stop] Auteur du plugin: Prototyx5.");
 		log.info("                                                              ");
-		log.info("[Randomly-Craft] Les plugins on bien ete arrete !");
-		log.info("[Randomly-Craft] Les Metrics on ete arrete !");
-		log.info("[Randomly-Craft] Stacker a ete arrete !");
-		log.info("[Randomly-Craft] JoinAndQuit a ete arreter !");
+		log.info("[Randomly-Craft Stop] Les plugins on bien ete arrete !");
+		log.info("[Randomly-Craft Stop] Les Metrics on ete arrete !");
+		log.info("[Randomly-Craft Stop] Stacker a ete arrete !");
+		log.info("[Randomly-Craft Stop] JoinAndQuit a ete arreter !");
 		log.info("                                                              ");
 		log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
@@ -94,27 +90,28 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 		ArrayList<String> lore;
 		switch (item) {
 		case Gun:
-			is = new ItemStack(Material.WATER, 1);
+			is = new ItemStack(Material.LAVA, 1);
 			im = is.getItemMeta();
 			im.setDisplayName(ChatColor.GOLD + "Legendary Wither Gun");
 			lore = new ArrayList<String>();
 			lore.add(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.GREEN + " Custom Items");
 			lore.add(ChatColor.GOLD + "Faire un clique droit dans le vide");
-			lore.add(ChatColor.GOLD + "avec cette arme fais tiré "); 
-			lore.add(ChatColor.GOLD + "des tète de wither !");
+			lore.add(ChatColor.GOLD + "avec cette arme fais tiré des tète de wither !");
 			im.setLore(lore);
 			is.setItemMeta(im);
+
 		}
 		return is;
 	}
+
 
 	@EventHandler
 	public void onPlayerConnect(PlayerJoinEvent j) {
 		Player player = j.getPlayer();
 		j.setJoinMessage("");
 		Server serv = Bukkit.getServer();
-		serv.broadcastMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + ChatColor.ITALIC + ChatColor.YELLOW + player.getName() + " a rejoin le serveur !");
-	
+		serv.broadcastMessage(ChatColor.AQUA + "[Randomly-Craft ConnectGestion] " + ChatColor.RESET + ChatColor.ITALIC + ChatColor.YELLOW + player.getName() + " a rejoin le serveur !");
+
 	}
 
 	@EventHandler
@@ -122,50 +119,50 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 		Player player = l.getPlayer();
 		l.setQuitMessage("");
 		Server serv = Bukkit.getServer();
-		serv.broadcastMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + ChatColor.ITALIC + ChatColor.YELLOW + player.getName() + ChatColor.RESET + " a quitté le serveur !");
+		serv.broadcastMessage(ChatColor.AQUA + "[Randomly-Craft DisconnectGestion] " + ChatColor.RESET + ChatColor.ITALIC + ChatColor.YELLOW + player.getName() + " a quitté le serveur !");
 
 	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if(!(e.getAction() == Action.RIGHT_CLICK_AIR)) return;
-		if(!(e.getItem().getType() == Material.WATER)) return;
-		for(Player player : Bukkit.getOnlinePlayers()) {
-		}
-		WitherSkull w = e.getPlayer().launchProjectile(WitherSkull.class);
+		if(!(e.getItem().getType() == Material.LAVA)) return;
+		Arrow w = e.getPlayer().launchProjectile(Arrow.class);
 		w.getFireTicks();
 		w.getMaxFireTicks();
 	}
 
 	@EventHandler
 	public void onPlayerPlaceWater(BlockPlaceEvent place) {
-		Player player = (Player) place.getBlockPlaced();	
-		if (Material.WATER != null) {
-			place.isCancelled();
-		}
+		Block block = place.getBlockPlaced();	
+		if(!(place.getBlock().getType() == Material.LAVA)) return;
+		place.isCancelled();
+		block.breakNaturally();
 	}
-	
-	
-	  @EventHandler
-	  public void onPlayerDamage(EntityDamageByEntityEvent event) {
-	    Entity entity = event.getEntity();
-	    entity.getLocation().getWorld().playEffect(entity.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
-	  }
+
+	@EventHandler
+	public void onPlayerDamage(EntityDamageByEntityEvent event) {
+		Entity entity = event.getEntity();
+		entity.getLocation().getWorld().playEffect(entity.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+	}
 
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof WitherSkull) {
-			WitherSkull w = (WitherSkull) e.getDamager();
+		if (e.getDamager() instanceof Arrow) {
+			Arrow w = (Arrow) e.getDamager();
 			if (w.getShooter() instanceof Player) {
 				Player shooter = (Player) w.getShooter();
-				if(shooter.getItemInHand().getType() == Material.WATER);
+				if(shooter.getItemInHand().getType() == Material.LAVA);
 				e.setDamage(2000000000);
 				
+
 			}
 		}
 	}
 
 
+
+	@SuppressWarnings("unused")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String args[]) {
 		Player player = (Player) sender;
 
@@ -176,28 +173,30 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 				Location lp = player.getLocation();
 				Location location = new Location(lp.getWorld(), lp.getX() + 5 , lp.getY(), lp.getZ());
 				player.getWorld().spawnEntity(location, EntityType.ENDERMAN);
-				player.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Un Enderman a ete spawn !");
+				player.sendMessage(ChatColor.AQUA + "[Randomly-Craft EntitySpawnGestion]" + ChatColor.RESET + " Un Enderman a ete spawn !");
 			}
 			else if(label.equalsIgnoreCase("signal")) {
 				Location lp = player.getLocation();
 				Location location = new Location(lp.getWorld(), lp.getX(), lp.getY() + 3, lp.getZ());
 				player.getWorld().spawnEntity(location, EntityType.ENDER_SIGNAL);
-				player.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Un Ender_Signal a ete spawn !");
+				player.sendMessage(ChatColor.AQUA + "[Randomly-Craft EntitySpawnGestion]" + ChatColor.RESET + " Un Ender_Signal a ete spawn !");
 			}
 			else if(label.equalsIgnoreCase("wither")) {
 				Player player1 = ((Player) sender).getPlayer();
 				if(player1.isOp()){
-					player.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Vous avez reçus le" + ChatColor.GOLD + ChatColor.ITALIC + " Legendary Wither Gun" + ChatColor.RESET + " !");
+					player.sendMessage(ChatColor.AQUA + "[Randomly-Craft CustomItemGestion]" + ChatColor.RESET + " Vous avez reçus le" + ChatColor.GOLD + ChatColor.ITALIC + " Legendary Wither Gun" + ChatColor.RESET + " !");
 					player.getInventory().addItem(getCustomItem(Items.Gun));
+					ItemStack is = null;
+					is = new ItemStack(Material.LAVA , 1);
 
 				}
 				else 
-					player.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RED + " Vous devez être Op !");
+					player.sendMessage(ChatColor.AQUA + "[Randomly-Craft OpGestion]" + ChatColor.RED + " Vous devez être Op !");
 			}
 			else if(label.equalsIgnoreCase("randomly-craft")) {
-				player.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Le plugin fonctionne correctement !");
+				player.sendMessage(ChatColor.AQUA + "[Randomly-Craft TestGestion]" + ChatColor.RESET + " Le plugin fonctionne correctement !");
 			}
-			if (cmd.getName().equalsIgnoreCase("fakejoin")) {
+			else if (cmd.getName().equalsIgnoreCase("fakejoin")) {
 				if (args.length == 0) {
 					sender.sendMessage(ChatColor.RED + "Il faut mettre un pseudo.");
 					return true;
@@ -213,42 +212,15 @@ public class RandomlyCraft_Main extends JavaPlugin implements Listener{
 					}
 					sender.sendMessage(ChatColor.RED + "/fj <username> [leave]");
 					return true;
+				} else {
+					((CommandSender) cmd).sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Il faut etre un joueur pour effectuer cette commande");
 				}
 
-			}
 
-			if (cmd.getName().equalsIgnoreCase("talkas")) {
-				if (args.length <= 0) {
-					sender.sendMessage(ChatColor.RED + "/ta <username> <message>");
-					return true;
-				}
-				if (args.length == 1) {
-					sender.sendMessage(ChatColor.RED + "Vous devez mettre un message !");
-					return true;
-				}
-				if (args.length >= 2) {
-					StringBuilder sb = new StringBuilder();
-					for (int i = 0; i < args.length; i++) {
-						if (i != 0) {
-							sb.append(" ");
-							sb.append(args[i]);
-						}
-					}
+				return true;
 
-					String stringToSend = sb.toString();
-					Bukkit.getServer().broadcastMessage("<" + args[0] + ">" + stringToSend);
-					return true;
-				}
 			}
-			else
-			{
-			}
-		} else {
-			sender.sendMessage(ChatColor.AQUA + "[Randomly-Craft]" + ChatColor.RESET + " Il faut etre un joueur pour effectuer cette commande");
 		}
-
-
-		return true;
-
+		return false;
 	}
 }

@@ -38,7 +38,7 @@ implements Listener
 
 					if (mpl.hasPermission("stacker.stack")) {
 						getLastPassenger(player).setPassenger(vehicle);
-						player.sendMessage(ChatColor.GREEN + "Vous avez stacker " + getLastPassenger(player).getName() + "!");
+						player.sendMessage(ChatColor.AQUA + "[Randomly-Craft StackGestion]" + ChatColor.GREEN + "Vous avez stacker " + getLastPassenger(player).getName() + "!");
 						getLastPassenger(player).sendMessage(ChatColor.BLUE + player.getName() + " vous a stacker");
 						alertPlayers(player, mpl, "message");
 					}
@@ -57,7 +57,8 @@ implements Listener
 	private boolean mplEjectPassenger(Player mpl, Entity passenger) {
 		if ((mpl.hasPermission("stacker.eject")) && 
 				(passenger.equals(mpl.getPassenger()))) {
-			mpl.sendMessage(ChatColor.GREEN + "Vous avez éjecter votre passagé !");
+			mpl.sendMessage(ChatColor.AQUA + "[Randomly-Craft StackGestion]" + ChatColor.GREEN + "Vous avez éjecter votre passagé !");
+			mpl.eject();
 			alertPlayers((Player)passenger, mpl, "message");
 
 			return true;
